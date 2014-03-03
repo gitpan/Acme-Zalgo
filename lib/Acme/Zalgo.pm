@@ -2,12 +2,15 @@ use strict;
 use warnings;
 
 package Acme::Zalgo;
-$Acme::Zalgo::VERSION = '0.001';
-# ABSTRACT: Speak the forbidden names while screwing up your terminal
+$Acme::Zalgo::VERSION = '0.002';
+# ABSTRACT: Speak the forbidden tongue, or just screw up your terminal
 
 use Exporter qw(import);
 
-our @EXPORT = qw(zalgofy);
+our @EXPORT = qw(zalgo);
+
+# spaces are zalgofied by default, but not other whitespace
+our $ZALGO_REGEX = qr/([[:alnum:] ])/;
 
 my $chars = <<"HE_COMES";
 # up
@@ -62,7 +65,7 @@ sub rand_char {
 	return substr($s, randint(length $s), 1);
 }
 
-sub zalgofy_char {
+sub zalgo_char {
 	my ($c, $upmin, $upmax, $midmin, $midmax, $downmin, $downmax) = @_;
 	for my $i (1..randint($upmin, $upmax)) {
 		$c .= rand_char($ZALGO[0]);
@@ -76,7 +79,7 @@ sub zalgofy_char {
 	return $c;
 }
 
-sub zalgofy {
+sub zalgo {
 	if (not @_) {
 		@_ = ("HE COMES");
 	}
@@ -87,7 +90,7 @@ sub zalgofy {
 		@_ = ($s, 0, $max, 0, $max, 0, $max);
 	}
 	my ($str, $minup, $maxup, $minmid, $maxmid, $mindown, $maxdown) = @_;
-	$str =~ s/(\p{AlNum})/zalgofy_char($1,$minup,$maxup+1,$minmid,$maxmid+1,$mindown,$maxdown+1)/ge;
+	$str =~ s/$ZALGO_REGEX/zalgo_char($1,$minup,$maxup+1,$minmid,$maxmid+1,$mindown,$maxdown+1)/ge;
 	return $str;
 }	
 
@@ -96,7 +99,7 @@ package
 
 sub HE {
 	my $pkg = shift;
-	Acme::Zalgo::zalgofy(@_);
+	Acme::Zalgo::zalgo(@_);
 }
 
 1;	
@@ -110,9 +113,11 @@ Acme::Zalgo - The Nezperdian hive-mind of chaos.
 
     use Acme::Zalgo;
 
-    print zalgofy("Hello world\n");
+    binmode STDOUT, ':utf8';
 
-    # alternate syntax.  NO COMMAS.
+    print zalgo("Hello world\n");
+
+    # alternate syntax.  NO COMMAS, THEY ARE FORBIDDEN
     print HE COMES "Tony The Pony\n";
 
 =head1 DESCRIPTION

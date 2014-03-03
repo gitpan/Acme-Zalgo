@@ -1,5 +1,5 @@
 ---
-abstract: 'Speak the forbidden names while screwing up your terminal'
+abstract: 'Speak the forbidden tongue, or just screw up your terminal'
 author:
   - 'Chuck Adams <cja987@gmail.com>'
 build_requires:
@@ -13,4 +13,4 @@ meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
 name: Acme-Zalgo
-version: '0.001'
+version: '0.002'

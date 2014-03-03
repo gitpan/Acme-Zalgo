@@ -1,15 +1,15 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More tests => 1;
 
-use Acme::Zalgo;
+use Acme::Zalgo '0.002';
 
 # half-assed tests
-zalgofy("Tony The Pony");
+zalgo("Tony The Pony");
 
 HE COMES "boingy boingy boingy";
 
 ok 1, "You were really expecting tests?";
 
-done_testing();
+
